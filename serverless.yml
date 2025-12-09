@@ -1,0 +1,36 @@
+service: ats-microservice
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: python3.10
+  region: ap-south-1
+  environment:
+    ATS_API_KEY: ${env:ATS_API_KEY}
+    ATS_BASE_URL: ${env:ATS_BASE_URL}
+
+functions:
+  getJobs:
+    handler: handler.get_jobs
+    events:
+      - http:
+          path: jobs
+          method: get
+
+  createCandidate:
+    handler: handler.create_candidate
+    events:
+      - http:
+          path: candidates
+          method: post
+
+  getApplications:
+    handler: handler.get_applications
+    events:
+      - http:
+          path: applications
+          method: get
+
+plugins:
+  - serverless-offline
